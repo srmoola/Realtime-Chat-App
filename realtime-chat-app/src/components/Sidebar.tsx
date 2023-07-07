@@ -9,7 +9,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Avatar, ListItemAvatar, Typography } from "@mui/material";
 
-const drawerWidth = 240;
+const drawerWidth = "20%";
 
 interface Props {
   window?: () => Window;
@@ -53,7 +53,7 @@ export default function Sidebar(props: Props) {
             marginLeft: "5px",
           }}
         >
-          Online Users
+          All Users
         </Typography>
       </Box>
       <Divider sx={{ backgroundColor: "black" }} />
@@ -72,8 +72,8 @@ export default function Sidebar(props: Props) {
         ].map((value) => {
           const labelId = `checkbox-list-secondary-label-${value}`;
           return (
-            <>
-              <ListItem key={value} disablePadding>
+            <div key={crypto.randomUUID()}>
+              <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemAvatar>
                     <Avatar alt={`Avatar n°${value + 1}`} />
@@ -85,7 +85,7 @@ export default function Sidebar(props: Props) {
                 </ListItemButton>
               </ListItem>
               <Divider />
-            </>
+            </div>
           );
         })}
       </List>
@@ -132,14 +132,6 @@ export default function Sidebar(props: Props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      ></Box>
     </Box>
   );
 }
