@@ -21,13 +21,49 @@ const ChatScreen = () => {
           <Box
             sx={{
               position: "relative",
-              bottom: "5%",
+              bottom: "7.5%",
               backgroundColor: "#fff",
-              height: "90%",
+              height: "92%",
               width: "100%",
               color: "white",
             }}
-          ></Box>
+          >
+            <Box
+              sx={{
+                backgroundColor: "#fff",
+                height: "100%",
+                width: "100%",
+                color: "white",
+                overflowY: "scroll",
+              }}
+              className="chatcontainer"
+            >
+              <div className="bubble left">
+                Bro ipsum dolor sit amet gaper backside single track, manny Bike
+                epic clipless. Schraeder drop gondy, rail fatty slash gear
+                jammer steeps
+              </div>
+              <div className="bubble right">Ok, Thank you</div>
+              <div className="bubble left"> ut labore et dolore magna </div>
+              <div className="bubble right">👌</div>
+              <div className="bubble left">
+                Bro ipsum dolor sit amet gaper backside single track, manny Bike
+                epic clipless. Schraeder drop gondy, rail fatty slash gear
+                jammer steeps
+              </div>
+              <div className="bubble right">Ok, Thank you</div>
+              <div className="bubble left"> ut labore et dolore magna </div>
+              <div className="bubble right">👌</div>
+              <div className="bubble left">
+                Bro ipsum dolor sit amet gaper backside single track, manny Bike
+                epic clipless. Schraeder drop gondy, rail fatty slash gear
+                jammer steeps
+              </div>
+              <div className="bubble right">Ok, Thank you</div>
+              <div className="bubble left"> ut labore et dolore magna </div>
+              <div className="bubble right">👌</div>
+            </Box>
+          </Box>
         </Box>
       </Container>
     </>
