@@ -2,12 +2,11 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import SendIcon from "@mui/icons-material/Send";
 import ErrorIcon from "@mui/icons-material/Error";
 import { useState } from "react";
-import { ErrorSharp } from "@mui/icons-material";
 import { Avatar, Tooltip } from "@mui/material";
+import { auth } from "../firebase.ts";
 
 export default function TextInput() {
   const [text, settext] = useState<string>("");
@@ -27,7 +26,10 @@ export default function TextInput() {
       <Avatar
         sx={{ margin: "10px" }}
         alt="Remy Sharp"
-        src="/static/images/avatar/1.jpg"
+        src={
+          auth.currentUser?.photoURL ||
+          "https://source.unsplash.com/random?wallpapers"
+        }
       />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <InputBase
@@ -41,9 +43,7 @@ export default function TextInput() {
           <SendIcon />
         ) : (
           <Tooltip title="Type something to send!">
-            <IconButton>
-              <ErrorIcon />
-            </IconButton>
+            <ErrorIcon sx={{ marginRight: "10px" }} />
           </Tooltip>
         )}
       </IconButton>

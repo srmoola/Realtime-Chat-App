@@ -6,18 +6,22 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ChatIcon from "@mui/icons-material/Chat";
-import CircleIcon from "@mui/icons-material/Circle";
-import { Avatar, ListItemAvatar, Typography } from "@mui/material";
+import { Avatar, ListItemAvatar, Tooltip, Typography } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { Brightness6 } from "@mui/icons-material";
+import HelpIcon from "@mui/icons-material/Help";
 
 const drawerWidth = "20%";
 
 interface Props {
   window?: () => Window;
+  logout: Function;
 }
 
-export default function Sidebar(props: Props) {
-  const { window } = props;
+const iconstyles = { cursor: "pointer", height: 35, width: 35, margin: 1 };
 
+export default function Sidebar({ window, logout }: Props) {
   const drawer = (
     <div>
       <Box
@@ -44,17 +48,21 @@ export default function Sidebar(props: Props) {
           alignItems: "center",
         }}
       >
-        <CircleIcon sx={{ color: "green" }} />
-        <Typography
-          sx={{
-            marginTop: "1px",
-            fontSize: "18px",
-            marginRight: "5px",
-            marginLeft: "5px",
-          }}
-        >
-          All Users
-        </Typography>
+        <Tooltip title="Settings">
+          <SettingsIcon sx={iconstyles} />
+        </Tooltip>
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <Tooltip title="Switch Theme">
+          <Brightness6 onClick={() => logout()} sx={iconstyles} />
+        </Tooltip>
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <Tooltip title="Help">
+          <HelpIcon onClick={() => logout()} sx={iconstyles} />
+        </Tooltip>
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <Tooltip title="Log Out">
+          <LogoutIcon onClick={() => logout()} sx={iconstyles} />
+        </Tooltip>
       </Box>
       <Divider sx={{ backgroundColor: "black" }} />
       <List
