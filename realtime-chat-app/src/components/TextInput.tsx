@@ -7,11 +7,48 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { useState } from "react";
 import { Avatar, Tooltip } from "@mui/material";
 import { auth } from "../firebase.ts";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { firestore } from "../firebase";
+
+const messageDatabase = collection(firestore, "Messages");
+
+function getTime() {
+  var now = new Date();
+  var hours = now.getHours();
+  var minutes: any = now.getMinutes();
+
+  // Convert hours to 12-hour format
+  var ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+  // Add leading zeros to minutes if necessary
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+
+  // Format the time as X:YZ PM
+  var time = hours + ":" + minutes + " " + ampm;
+
+  return time;
+}
 
 export default function TextInput() {
   const [text, settext] = useState<string>("");
 
-  console.log(auth.currentUser?.photoURL);
+  const handleSubmit = async (message: string) => {
+    await addDoc(messageDatabase, {
+      text: message,
+      sender: auth.currentUser?.displayName,
+      senderimageurl: auth.currentUser?.photoURL,
+      senderemail: auth.currentUser?.email,
+      realtime: getTime(),
+      timestamp: serverTimestamp(),
+    });
+
+    settext("");
+  };
+
   return (
     <Paper
       sx={{
@@ -36,10 +73,20 @@ export default function TextInput() {
         sx={{ ml: 2, mr: 2, flex: 1 }}
         onChange={(e) => settext(e.target.value)}
         placeholder="Type here to chat..."
-        onSubmit={(e) => e.preventDefault()}
+        value={text}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSubmit(text);
+          }
+        }}
       />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+      <IconButton
+        type="button"
+        sx={{ p: "10px" }}
+        aria-label="search"
+        onClick={() => handleSubmit(text)}
+      >
         {text.length > 1 ? (
           <SendIcon />
         ) : (

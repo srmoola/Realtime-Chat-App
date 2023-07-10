@@ -3,29 +3,35 @@ import Box from "@mui/material/Box";
 import TextInput from "./TextInput";
 import LeftBubble from "./LeftBubble";
 import RightBubble from "./RightBubble";
+import { auth, firestore } from "../firebase";
+import {
+  collection,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
 
-function getTime() {
-  var now = new Date();
-  var hours = now.getHours();
-  var minutes: any = now.getMinutes();
-
-  // Convert hours to 12-hour format
-  var ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // Handle midnight (0 hours)
-
-  // Add leading zeros to minutes if necessary
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
-
-  // Format the time as X:YZ PM
-  var time = hours + ":" + minutes + " " + ampm;
-
-  return time;
-}
+const messageDatabase = collection(firestore, "Messages");
 
 const ChatScreen = () => {
+  const [messageList, setmessageList] = useState<any>([]);
+  console.log(messageList);
+
+  useEffect(() => {
+    const q = query(messageDatabase, orderBy("timestamp"), limit(50));
+    const getMessages = onSnapshot(q, (user: { docs: any[] }) => {
+      let updatedUsers: any[] = [];
+      user.docs.forEach((doc: { data: () => any; id: any }) => {
+        updatedUsers.push({ ...doc.data(), id: doc.id });
+      });
+      setmessageList(updatedUsers);
+    });
+
+    return () => getMessages(); // Cleanup the listener when component unmounts
+  }, []);
+
   return (
     <>
       <Container
@@ -68,14 +74,26 @@ const ChatScreen = () => {
               }}
             >
               <div className="spacing"></div>
-              <LeftBubble
-                text="bhbh uefe fefuhus d fuuh fwefw"
-                image="https://lh3.googleusercontent.com/ogw/AGvuzYa3BuTdCwQ6IjVmMj5pNNMNHRHzHzKATaBixmmzyQ=s32-c-mo"
-                name="Satyadev Moolagani"
-                time={getTime()}
-              />
-
-              <RightBubble text="njnjdnjfj" />
+              {messageList.map(
+                (message: {
+                  senderemail: string;
+                  text: string;
+                  senderimageurl: string;
+                  sender: string;
+                  realtime: string;
+                }) =>
+                  message.senderemail === auth.currentUser?.email ? (
+                    <RightBubble text={message.text} />
+                  ) : (
+                    <LeftBubble
+                      text={message.text}
+                      image={message.senderimageurl}
+                      name={message.sender}
+                      time={message.realtime}
+                    />
+                  )
+              )}
+              <div className="autoscroll"></div>
             </Box>
           </Box>
         </Box>

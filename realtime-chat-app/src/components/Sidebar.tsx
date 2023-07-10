@@ -13,6 +13,7 @@ import { Brightness6 } from "@mui/icons-material";
 import HelpIcon from "@mui/icons-material/Help";
 import { firestore } from "../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 const drawerWidth = "20%";
 
@@ -26,6 +27,20 @@ const iconstyles = { cursor: "pointer", height: 35, width: 35, margin: 1 };
 const userListRef = collection(firestore, "Users");
 
 export default function Sidebar({ window, logout }: Props) {
+  const [users, setUsers] = useState<any[]>([]);
+
+  useEffect(() => {
+    const getUsers = onSnapshot(userListRef, (user) => {
+      let updatedUsers: any[] = [];
+      user.docs.forEach((doc) => {
+        updatedUsers.push({ ...doc.data(), id: doc.id });
+      });
+      setUsers(updatedUsers);
+    });
+
+    return () => getUsers(); // Cleanup the listener when component unmounts
+  }, []); // Run the effect only once on component mount
+
   const drawer = (
     <div>
       <Box
@@ -78,22 +93,18 @@ export default function Sidebar({ window, logout }: Props) {
           marginTop: "0px",
         }}
       >
-        {[
-          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-          20,
-        ].map((value) => {
-          const labelId = `checkbox-list-secondary-label-${value}`;
+        {users.map((value) => {
           return (
-            <div key={crypto.randomUUID()}>
+            <div key={value.id}>
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemAvatar>
-                    <Avatar alt={`Avatar n°${value + 1}`} />
+                    <Avatar
+                      alt={`Avatar n°${value + 1}`}
+                      src={value.imageURL}
+                    />
                   </ListItemAvatar>
-                  <ListItemText
-                    id={labelId}
-                    primary={`Line item ${value + 1}`}
-                  />
+                  <ListItemText primary={value.displayName} />
                 </ListItemButton>
               </ListItem>
               <Divider />
