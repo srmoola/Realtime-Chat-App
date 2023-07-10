@@ -11,9 +11,9 @@ import { auth } from "../firebase.ts";
 export default function TextInput() {
   const [text, settext] = useState<string>("");
 
+  console.log(auth.currentUser?.photoURL);
   return (
     <Paper
-      component="form"
       sx={{
         display: "flex",
         alignItems: "center",
@@ -28,7 +28,7 @@ export default function TextInput() {
         alt="Remy Sharp"
         src={
           auth.currentUser?.photoURL ||
-          "https://source.unsplash.com/random?wallpapers"
+          "https://source.unsplash.com/random?avatars"
         }
       />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
@@ -36,6 +36,7 @@ export default function TextInput() {
         sx={{ ml: 2, mr: 2, flex: 1 }}
         onChange={(e) => settext(e.target.value)}
         placeholder="Type here to chat..."
+        onSubmit={(e) => e.preventDefault()}
       />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <IconButton type="button" sx={{ p: "10px" }} aria-label="search">

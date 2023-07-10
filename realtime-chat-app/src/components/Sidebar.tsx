@@ -11,6 +11,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Brightness6 } from "@mui/icons-material";
 import HelpIcon from "@mui/icons-material/Help";
+import { firestore } from "../firebase";
+import { collection, onSnapshot } from "firebase/firestore";
 
 const drawerWidth = "20%";
 
@@ -20,6 +22,8 @@ interface Props {
 }
 
 const iconstyles = { cursor: "pointer", height: 35, width: 35, margin: 1 };
+
+const userListRef = collection(firestore, "Users");
 
 export default function Sidebar({ window, logout }: Props) {
   const drawer = (

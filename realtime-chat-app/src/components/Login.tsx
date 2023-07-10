@@ -11,11 +11,12 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleButton from "react-google-button";
 import { Divider, InputAdornment, Tooltip } from "@mui/material";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import HelpIcon from "@mui/icons-material/Help";
 
 type Props = {
   signInWithGoogle: Function;
+  createUserCustom: Function;
 };
 
 function Copyright(props: any) {
@@ -38,8 +39,16 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Login({ signInWithGoogle }: Props) {
+export default function LoginPage({
+  signInWithGoogle,
+  createUserCustom,
+}: Props) {
   const [imageurl, setimageurl] = useState<string>("");
+  const [displayname, setdisplayname] = useState<string>("");
+
+  const handleSubmit = (displayName: string, imageURL: string) => {
+    createUserCustom(displayName, imageURL);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -82,20 +91,11 @@ export default function Login({ signInWithGoogle }: Props) {
                 margin="normal"
                 required
                 fullWidth
-                id="firstname"
-                label="First Name"
-                name="firstname"
-                autoComplete="firstname"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="lastname"
-                label="Last Name"
-                name="lastname"
-                autoComplete="lastname"
+                id="displayname"
+                label="Display Name"
+                name="displayname"
+                autoComplete="displayname"
+                onChange={(e) => setdisplayname(e.target.value)}
                 autoFocus
               />
               <TextField
@@ -126,12 +126,14 @@ export default function Login({ signInWithGoogle }: Props) {
               />
 
               <Button
-                type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={() => {
+                  handleSubmit(displayname, imageurl);
+                }}
               >
-                Sign In
+                Enter Chat
               </Button>
               <Divider sx={{ marginTop: "20px" }}>OR</Divider>
               <GoogleButton

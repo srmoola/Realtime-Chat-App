@@ -5,7 +5,7 @@ import {
   GoogleAuthProvider,
   setPersistence,
 } from "firebase/auth";
-import firebase from "firebase/compat/app";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAGYkFiFeNQuUAVgVJszHZXVY1yaLqENXQ",
@@ -19,6 +19,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+export const firestore = getFirestore(app);
 
 // Enable persistence
 setPersistence(auth, browserLocalPersistence);
