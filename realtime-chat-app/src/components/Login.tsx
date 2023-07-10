@@ -135,7 +135,12 @@ export default function Login({ signInWithGoogle }: Props) {
               </Button>
               <Divider sx={{ marginTop: "20px" }}>OR</Divider>
               <GoogleButton
-                style={{ marginTop: "40px", position: "relative", left: "25%" }}
+                style={{
+                  marginTop: "40px",
+                  position: "relative",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                }}
                 onClick={() => {
                   signInWithGoogle();
                 }}
