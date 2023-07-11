@@ -50,6 +50,10 @@ export const createUserCustom = async (
     const user = auth.currentUser;
 
     if (user) {
+      if (imageURL.length < 15)
+        imageURL =
+          "https://api.dicebear.com/6.x/pixel-art/svg?seed=" + displayName;
+
       updateProfile(user, {
         displayName: displayName,
         photoURL: imageURL,

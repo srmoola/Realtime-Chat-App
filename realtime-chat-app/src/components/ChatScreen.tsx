@@ -12,6 +12,8 @@ import {
   query,
 } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
+import { useAtom } from "jotai";
+import { chatBgColor, chatTextColors } from "../features/jotai";
 
 const messageDatabase = collection(firestore, "Messages");
 
@@ -45,26 +47,36 @@ const ChatScreen = () => {
     return () => getMessages(); // Cleanup the listener when component unmounts
   }, []);
 
+  const chatBackgroundColor: any = useAtom(chatBgColor);
+  const textColors: any = useAtom<string>(chatTextColors);
+
   return (
     <>
       <Container
-        sx={{ display: "flex", justifyContent: "right" }}
+        sx={{
+          display: "flex",
+          justifyContent: "right",
+          backgroundColor: chatBackgroundColor,
+          marginLeft: { xl: "390px" },
+        }}
         maxWidth="xl"
       >
         <Box
           sx={{
-            backgroundColor: "#fff",
+            backgroundColor: chatBackgroundColor,
             height: "100vh",
             width: "80%",
-            color: "white",
+            color: textColors,
+            marginRight: { xl: "10%" },
+            marginLeft: { xl: "10%" },
           }}
         >
           <TextInput />
           <Box
             sx={{
               position: "relative",
-              backgroundColor: "#fff",
-              height: { md: "650px", xl: "850px" },
+              backgroundColor: chatBackgroundColor,
+              height: { md: "700px", xl: "825px" },
               width: "100%",
               color: "white",
               bottom: "7.5%",
@@ -75,7 +87,7 @@ const ChatScreen = () => {
               sx={{
                 position: "relative",
                 bottom: "7.5%",
-                backgroundColor: "#fff",
+                backgroundColor: chatBackgroundColor,
                 height: "fit-content",
                 width: "100%",
                 color: "white",

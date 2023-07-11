@@ -14,6 +14,10 @@ import HelpIcon from "@mui/icons-material/Help";
 import { firestore } from "../firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { sideBarTextColor, sidebarcolor } from "../features/jotai";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import SidebarSkeleton from "./SidebarSkeleton";
 
 const drawerWidth = "20%";
 
@@ -28,6 +32,9 @@ const userListRef = collection(firestore, "Users");
 
 export default function Sidebar({ window, logout }: Props) {
   const [users, setUsers] = useState<any[]>([]);
+  const sidebarBackgroundColor: any = useAtom<string>(sidebarcolor);
+  const textColors: any = useAtom<string>(sideBarTextColor);
+  const [isLoaded, setisLoaded] = useState(false);
 
   useEffect(() => {
     const q = query(userListRef, orderBy("timestamp", "desc"));
@@ -39,11 +46,15 @@ export default function Sidebar({ window, logout }: Props) {
       setUsers(updatedUsers);
     });
 
+    setTimeout(() => {
+      setisLoaded(true);
+    }, 2000);
+
     return () => getUsers(); // Cleanup the listener when component unmounts
   }, []); // Run the effect only once on component mount
 
   const drawer = (
-    <div>
+    <div style={{ backgroundColor: sidebarBackgroundColor }}>
       <Box
         sx={{
           width: "100%",
@@ -52,13 +63,13 @@ export default function Sidebar({ window, logout }: Props) {
           placeItems: "center",
         }}
       >
-        <Typography variant="h1" sx={{ fontSize: "20px" }}>
+        <Typography variant="h1" sx={{ fontSize: "20px", color: textColors }}>
           Real Time Chat App
           <ChatIcon sx={{ marginLeft: "5px" }} />
         </Typography>
       </Box>
 
-      <Divider sx={{ backgroundColor: "black" }} />
+      <Divider sx={{ backgroundColor: textColors, marginBottom: "5px" }} />
       <Box
         sx={{
           width: "100%",
@@ -66,53 +77,82 @@ export default function Sidebar({ window, logout }: Props) {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          color: textColors,
         }}
       >
         <Tooltip title="Settings">
           <SettingsIcon sx={iconstyles} />
         </Tooltip>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <Divider
+          sx={{ height: 28, m: 0.5, backgroundColor: textColors }}
+          orientation="vertical"
+        />
         <Tooltip title="Switch Theme">
           <Brightness6 onClick={() => logout()} sx={iconstyles} />
         </Tooltip>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <Divider
+          sx={{ height: 28, m: 0.5, backgroundColor: textColors }}
+          orientation="vertical"
+        />
         <Tooltip title="Help">
           <HelpIcon onClick={() => logout()} sx={iconstyles} />
         </Tooltip>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <Divider
+          sx={{ height: 28, m: 0.5, backgroundColor: textColors }}
+          orientation="vertical"
+        />
         <Tooltip title="Log Out">
           <LogoutIcon onClick={() => logout()} sx={iconstyles} />
         </Tooltip>
       </Box>
-      <Divider sx={{ backgroundColor: "black" }} />
+      <Divider sx={{ backgroundColor: textColors, marginTop: "5px" }} />
       <List
         dense
         sx={{
           width: "100%",
           maxWidth: 360,
-          bgcolor: "background.paper",
+          backgroundColor: sidebarBackgroundColor,
           marginTop: "0px",
         }}
       >
-        {users.map((value) => {
-          return (
-            <div key={value.id}>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={`Avatar n°${value + 1}`}
-                      src={value.imageURL}
+        {!isLoaded ? (
+          <SidebarSkeleton userListLength={users} />
+        ) : (
+          users.map((value) => {
+            return (
+              <div key={value.id}>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemAvatar>
+                      <Avatar
+                        alt={`Avatar n°${value + 1}`}
+                        src={value.imageURL}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      sx={{ color: textColors }}
+                      primary={value.displayName}
                     />
-                  </ListItemAvatar>
-                  <ListItemText primary={value.displayName} />
-                </ListItemButton>
-              </ListItem>
-              <Divider />
-            </div>
-          );
-        })}
+                  </ListItemButton>
+                </ListItem>
+                <Divider
+                  sx={{
+                    backgroundColor: textColors,
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                />
+              </div>
+            );
+          })
+        )}
       </List>
+      <Box
+        style={{
+          height: "25%",
+          backgroundColor: sidebarBackgroundColor,
+        }}
+      ></Box>
     </div>
   );
 

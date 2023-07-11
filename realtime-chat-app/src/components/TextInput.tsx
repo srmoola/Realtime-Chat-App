@@ -87,7 +87,7 @@ export default function TextInput() {
         aria-label="search"
         onClick={() => handleSubmit(text)}
       >
-        {text.length > 1 ? (
+        {text.length > 4 ? (
           <SendIcon />
         ) : (
           <Tooltip title="Type something to send!">
