@@ -12,7 +12,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { Brightness6 } from "@mui/icons-material";
 import HelpIcon from "@mui/icons-material/Help";
 import { firestore } from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 const drawerWidth = "20%";
@@ -30,7 +30,8 @@ export default function Sidebar({ window, logout }: Props) {
   const [users, setUsers] = useState<any[]>([]);
 
   useEffect(() => {
-    const getUsers = onSnapshot(userListRef, (user) => {
+    const q = query(userListRef, orderBy("timestamp", "desc"));
+    const getUsers = onSnapshot(q, (user) => {
       let updatedUsers: any[] = [];
       user.docs.forEach((doc) => {
         updatedUsers.push({ ...doc.data(), id: doc.id });

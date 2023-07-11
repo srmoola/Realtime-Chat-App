@@ -4,7 +4,12 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  serverTimestamp,
+} from "firebase/firestore";
 import { auth, googleprovider, firestore } from "../firebase";
 
 const userListRef = collection(firestore, "Users");
@@ -12,6 +17,22 @@ const userListRef = collection(firestore, "Users");
 export const signInWithGoogle = async () => {
   try {
     await signInWithPopup(auth, googleprovider);
+
+    const querySnapshot = await getDocs(userListRef);
+    const existingUsers: any[] = querySnapshot.docs.map(
+      (doc) => doc.data().displayName
+    );
+
+    const currentUserDisplayName = auth.currentUser?.displayName;
+
+    // Check if the current user's display name exists in the existing users array
+    if (!existingUsers.includes(currentUserDisplayName)) {
+      await addDoc(userListRef, {
+        displayName: currentUserDisplayName,
+        imageURL: auth.currentUser?.photoURL,
+        timestamp: serverTimestamp(),
+      });
+    }
   } catch (err) {
     console.error(err);
   }
@@ -37,6 +58,7 @@ export const createUserCustom = async (
       await addDoc(userListRef, {
         displayName: displayName,
         imageURL: imageURL,
+        timestamp: serverTimestamp(),
       });
     }
 

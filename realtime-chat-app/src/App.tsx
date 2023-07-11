@@ -4,6 +4,7 @@ import LoginPage from "./components/Login";
 import Sidebar from "./components/Sidebar";
 import { auth } from "./firebase";
 import { signInWithGoogle, createUserCustom, logout } from "./features/signin";
+import Loading from "./components/Loading";
 
 function App() {
   const [falseRender, setfalseRender] = useState<boolean>(false);
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <>
+      {!falseRender && <Loading />}
       {auth.currentUser ? (
         <>
           <Sidebar logout={logout} />

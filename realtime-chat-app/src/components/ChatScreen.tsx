@@ -11,13 +11,26 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const messageDatabase = collection(firestore, "Messages");
 
 const ChatScreen = () => {
   const [messageList, setmessageList] = useState<any>([]);
-  console.log(messageList);
+  const autoscroll = useRef<any>();
+  const scrollToBottom = () => {
+    autoscroll.current.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
+    });
+  };
+
+  useEffect(() => {
+    if (autoscroll.current) {
+      scrollToBottom();
+    }
+  }, [messageList]);
 
   useEffect(() => {
     const q = query(messageDatabase, orderBy("timestamp"), limit(50));
@@ -50,12 +63,11 @@ const ChatScreen = () => {
           <Box
             sx={{
               position: "relative",
-              bottom: "7.5%",
               backgroundColor: "#fff",
-              height: "650px",
+              height: { md: "650px", xl: "850px" },
               width: "100%",
               color: "white",
-
+              bottom: "7.5%",
               overflowY: "scroll",
             }}
           >
@@ -81,11 +93,13 @@ const ChatScreen = () => {
                   senderimageurl: string;
                   sender: string;
                   realtime: string;
+                  id: string;
                 }) =>
                   message.senderemail === auth.currentUser?.email ? (
-                    <RightBubble text={message.text} />
+                    <RightBubble key={message.id} text={message.text} />
                   ) : (
                     <LeftBubble
+                      key={message.id}
                       text={message.text}
                       image={message.senderimageurl}
                       name={message.sender}
@@ -93,8 +107,8 @@ const ChatScreen = () => {
                     />
                   )
               )}
-              <div className="autoscroll"></div>
             </Box>
+            <div ref={autoscroll}></div>
           </Box>
         </Box>
       </Container>
