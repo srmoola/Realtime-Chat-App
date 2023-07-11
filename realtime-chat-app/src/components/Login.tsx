@@ -79,7 +79,7 @@ export default function LoginPage({
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: 1, backgroundColor: "black" }}>
               <ChatIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -127,7 +127,7 @@ export default function LoginPage({
               <Button
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, backgroundColor: "black" }}
                 onClick={() => {
                   handleSubmit(displayname, imageurl);
                 }}
@@ -141,6 +141,7 @@ export default function LoginPage({
                   position: "relative",
                   left: "50%",
                   transform: "translateX(-50%)",
+                  backgroundColor: "black",
                 }}
                 onClick={() => {
                   signInWithGoogle();
@@ -151,14 +152,14 @@ export default function LoginPage({
                 sx={{
                   width: 64,
                   height: 64,
-                  marginTop: "20px",
-                  position: "relative",
+                  mt: "50px",
+                  p: "relative",
                   left: "50%",
                   transform: "translateX(-50%)",
                 }}
                 src={imageurl}
               />
-              <Copyright sx={{ mt: 10 }} />
+              <Copyright sx={{ mt: 8 }} />
             </Box>
           </Box>
         </Grid>
