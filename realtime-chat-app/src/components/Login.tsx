@@ -6,7 +6,6 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import ChatIcon from "@mui/icons-material/Chat";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleButton from "react-google-button";
@@ -27,9 +26,13 @@ function Copyright(props: any) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Realtime-Chat-App
+      {"Created by Satyadev Moolagani at "}
+      <Link
+        color="inherit"
+        target="_blank"
+        href="https://skylinewebstudio.com/"
+      >
+        Skyline Web Studio
       </Link>{" "}
       {new Date().getFullYear()}
     </Typography>
@@ -59,12 +62,9 @@ export default function LoginPage({
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random?code)",
+            backgroundImage: "url(/codeninjassidebarpic.gif)",
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
+
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -79,11 +79,12 @@ export default function LoginPage({
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, backgroundColor: "black" }}>
-              <ChatIcon />
-            </Avatar>
+            <Avatar
+              src="/codeninjaslogo.jpg"
+              sx={{ m: 1, backgroundColor: "black" }}
+            ></Avatar>
             <Typography component="h1" variant="h5">
-              Realtime Chat App Sign In
+              CodeNinjas Dojo Chat Sign-In
             </Typography>
             <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
@@ -93,7 +94,7 @@ export default function LoginPage({
                 id="displayname"
                 label="Display Name"
                 name="displayname"
-                autoComplete="displayname"
+                autoComplete="off"
                 onChange={(e) => setdisplayname(e.target.value)}
                 autoFocus
               />
@@ -104,7 +105,7 @@ export default function LoginPage({
                 id="imageurl"
                 label="Avatar Image URL"
                 name="imageurl"
-                autoComplete="imageurl"
+                autoComplete="off"
                 autoFocus
                 onChange={(e) => setimageurl(e.target.value)}
                 InputProps={{
@@ -152,14 +153,14 @@ export default function LoginPage({
                 sx={{
                   width: 64,
                   height: 64,
-                  mt: "50px",
+                  mt: { xl: "50px", md: "20px" },
                   p: "relative",
                   left: "50%",
                   transform: "translateX(-50%)",
                 }}
                 src={imageurl}
               />
-              <Copyright sx={{ mt: 8 }} />
+              <Copyright sx={{ mt: { xl: 8, md: 2 } }} />
             </Box>
           </Box>
         </Grid>

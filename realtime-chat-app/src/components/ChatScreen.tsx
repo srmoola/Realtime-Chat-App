@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Avatar, Container, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextInput from "./TextInput";
 import LeftBubble from "./LeftBubble";
@@ -54,10 +54,10 @@ const ChatScreen = () => {
     <>
       <Container
         sx={{
-          display: "flex",
+          display: { xl: "flex", lg: "flex", md: "flex", xs: "none" },
           justifyContent: "right",
           backgroundColor: chatBackgroundColor,
-          marginLeft: { xl: "390px" },
+          marginLeft: { xl: "390px", xs: "0px" },
           transitionProperty: "background-color, color",
           transitionDuration: "0.3s",
           transitionTimingFunction: "linear",
@@ -70,8 +70,8 @@ const ChatScreen = () => {
             height: "100vh",
             width: "80%",
             color: textColors,
-            marginRight: { xl: "10%" },
-            marginLeft: { xl: "10%" },
+            marginRight: { xl: "10%", xs: "0%" },
+            marginLeft: { xl: "10%", xs: "0%" },
             transitionProperty: "background-color, color",
             transitionDuration: "0.3s",
             transitionTimingFunction: "linear",
@@ -133,6 +133,25 @@ const ChatScreen = () => {
           </Box>
         </Box>
       </Container>
+      <Box
+        sx={{
+          height: "fit-content",
+          display: { xl: "none", lg: "none", md: "none", xs: "block" },
+          color: "#fff",
+          position: "absolute",
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      >
+        <Avatar
+          sx={{ ml: "auto", mr: "auto", mb: 1, height: 96, width: 96 }}
+          alt="CodeNinjasLogo"
+          src="public/codeninjaslogo.jpg"
+        />
+        <Typography sx={{ ml: 10, mr: 10 }}>
+          Please get off your phone! App can only be opened on a computer!
+        </Typography>
+      </Box>
     </>
   );
 };

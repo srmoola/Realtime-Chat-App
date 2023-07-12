@@ -5,18 +5,11 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import ChatIcon from "@mui/icons-material/Chat";
-import {
-  Avatar,
-  IconButton,
-  ListItemAvatar,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import { Avatar, IconButton, ListItemAvatar, Tooltip } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import HelpIcon from "@mui/icons-material/Help";
 import { firestore } from "../firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -28,6 +21,7 @@ import {
   sidebarcolor,
 } from "../features/jotai";
 import SidebarSkeleton from "./SidebarSkeleton";
+import RedirectMenu from "./RedirectMenu";
 
 const drawerWidth = "20%";
 
@@ -55,6 +49,15 @@ export default function Sidebar({ window, logout }: Props) {
   const [, setChatBgColor] = useAtom(chatBgColor);
   const [, setChatTextColors] = useAtom(chatTextColors);
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const setLight = () => {
     setsidebarbgcolor("#fff");
     setTextColors("#000");
@@ -63,7 +66,7 @@ export default function Sidebar({ window, logout }: Props) {
   };
 
   const setDark = () => {
-    setsidebarbgcolor("#333232");
+    setsidebarbgcolor("#6e6e6e");
     setTextColors("#fff");
     setChatBgColor("#1f1e1e");
     setChatTextColors("#fff");
@@ -93,19 +96,15 @@ export default function Sidebar({ window, logout }: Props) {
       <Box
         sx={{
           width: "100%",
-          height: "100px",
+          height: { md: "125px", xl: "150px" },
           display: "grid",
           placeItems: "center",
+          backgroundImage: "url(/codeninjaslightlogo.png)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
-      >
-        <Typography
-          variant="h1"
-          sx={{ fontSize: "20px", color: textColors, ...transitionStyles }}
-        >
-          Real Time Chat App
-          <ChatIcon sx={{ marginLeft: "5px" }} />
-        </Typography>
-      </Box>
+      ></Box>
 
       <Divider
         sx={{
@@ -125,6 +124,28 @@ export default function Sidebar({ window, logout }: Props) {
           ...transitionStyles,
         }}
       >
+        <Tooltip title="Log In to Dojo">
+          <IconButton onClick={handleClick}>
+            <HomeIcon
+              style={{ color: textColors, ...transitionStyles }}
+              sx={iconstyles}
+            />
+          </IconButton>
+        </Tooltip>
+        <RedirectMenu
+          handleClose={handleClose}
+          open={open}
+          anchorEl={anchorEl}
+        />
+        <Divider
+          sx={{
+            height: 28,
+            m: 0.5,
+            backgroundColor: textColors,
+            ...transitionStyles,
+          }}
+          orientation="vertical"
+        />
         <Tooltip title="Light Mode">
           <IconButton onClick={setLight}>
             <LightModeIcon
@@ -159,18 +180,7 @@ export default function Sidebar({ window, logout }: Props) {
           }}
           orientation="vertical"
         />
-        <Tooltip title="Help">
-          <HelpIcon sx={iconstyles} />
-        </Tooltip>
-        <Divider
-          sx={{
-            height: 28,
-            m: 0.5,
-            backgroundColor: textColors,
-            ...transitionStyles,
-          }}
-          orientation="vertical"
-        />
+
         <Tooltip title="Log Out">
           <LogoutIcon
             style={transitionStyles}

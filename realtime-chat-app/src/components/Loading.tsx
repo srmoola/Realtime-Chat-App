@@ -1,6 +1,6 @@
+import Avatar from "@mui/material/Avatar";
 import Backdrop from "@mui/material/Backdrop";
 import { motion } from "framer-motion";
-import ChatIcon from "@mui/icons-material/Chat";
 
 export default function Loading() {
   return (
@@ -8,7 +8,7 @@ export default function Loading() {
       sx={{
         color: "#fff",
         zIndex: (theme) => theme.zIndex.drawer + 1,
-        backgroundColor: "black",
+        backgroundColor: "#fff",
       }}
       open={true}
     >
@@ -22,10 +22,10 @@ export default function Loading() {
         transition={{
           duration: 1.5,
           ease: "easeInOut",
-          times: [0, 0.2, 0.5, 0.8, 1],
+          times: [0, 0.2, 0.5, 0.8, 3],
         }}
       >
-        <ChatIcon sx={{ color: "black" }} />
+        <Avatar alt="CodeNinjasLogo" src="public/codeninjaslogo.jpg" />
       </motion.div>
     </Backdrop>
   );

@@ -10,7 +10,7 @@ function App() {
   const [falseRender, setfalseRender] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => setfalseRender(!falseRender), 2000);
+    setTimeout(() => setfalseRender(!falseRender), 2500);
   }, []);
 
   return (
