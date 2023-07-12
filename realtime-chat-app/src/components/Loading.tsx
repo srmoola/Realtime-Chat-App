@@ -25,7 +25,7 @@ export default function Loading() {
           times: [0, 0.2, 0.5, 0.8, 3],
         }}
       >
-        <Avatar alt="CodeNinjasLogo" src="public/codeninjaslogo.jpg" />
+        <Avatar alt="CodeNinjasLogo" src="/codeninjaslogo.jpg" />
       </motion.div>
     </Backdrop>
   );
