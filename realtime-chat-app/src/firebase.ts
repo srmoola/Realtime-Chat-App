@@ -8,13 +8,13 @@ import {
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAGYkFiFeNQuUAVgVJszHZXVY1yaLqENXQ",
-  authDomain: "realtime-chat-app-edd4b.firebaseapp.com",
-  projectId: "realtime-chat-app-edd4b",
-  storageBucket: "realtime-chat-app-edd4b.appspot.com",
-  messagingSenderId: "84792719044",
-  appId: "1:84792719044:web:087f6631131657c3e0fb91",
-  measurementId: "G-GP99JXLYV4",
+  apiKey: "AIzaSyAV4QYTsbLT84NCFsNLYjtclj0idm7dEdU",
+  authDomain: "codeninjasdojochat.firebaseapp.com",
+  projectId: "codeninjasdojochat",
+  storageBucket: "codeninjasdojochat.appspot.com",
+  messagingSenderId: "932359496982",
+  appId: "1:932359496982:web:556dd69a94c7c0db50dc37",
+  measurementId: "G-LEPD000YR6",
 };
 
 const app = initializeApp(firebaseConfig);
