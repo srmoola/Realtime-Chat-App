@@ -3,15 +3,27 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
-import { Avatar, IconButton, ListItemAvatar, Tooltip } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  ListItemAvatar,
+  Tooltip,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { firestore } from "../firebase";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { auth, firestore } from "../firebase";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import {
@@ -22,6 +34,7 @@ import {
 } from "../features/jotai";
 import SidebarSkeleton from "./SidebarSkeleton";
 import RedirectMenu from "./RedirectMenu";
+import { adminlist } from "../features/admins";
 
 const drawerWidth = "20%";
 
@@ -88,6 +101,10 @@ export default function Sidebar({ window, logout }: Props) {
 
     return () => getUsers(); // Cleanup the listener when component unmounts
   }, []); // Run the effect only once on component mount
+
+  const banUser = async (docID: string) => {
+    await deleteDoc(doc(userListRef, docID));
+  };
 
   const drawer = (
     <Box
@@ -213,18 +230,40 @@ export default function Sidebar({ window, logout }: Props) {
             return (
               <div key={value.id}>
                 <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={`Avatar n°${value + 1}`}
-                        src={value.imageURL}
+                  {adminlist.includes(auth.currentUser?.email || "") ? (
+                    <>
+                      <ListItemAvatar sx={{ ml: 1.5 }}>
+                        <Avatar
+                          alt={`Avatar n°${value + 1}`}
+                          src={value.imageURL}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        sx={{ color: textColors }}
+                        primary={value.displayName}
                       />
-                    </ListItemAvatar>
-                    <ListItemText
-                      sx={{ color: textColors }}
-                      primary={value.displayName}
-                    />
-                  </ListItemButton>
+                      <Button
+                        onClick={() => banUser(value.id)}
+                        color="error"
+                        sx={{ mr: 2 }}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <ListItemAvatar sx={{ ml: 1.5 }}>
+                        <Avatar
+                          alt={`Avatar n°${value + 1}`}
+                          src={value.imageURL}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        sx={{ color: textColors }}
+                        primary={value.displayName}
+                      />
+                    </>
+                  )}
                 </ListItem>
                 <Divider
                   sx={{

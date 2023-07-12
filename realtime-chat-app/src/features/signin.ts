@@ -11,6 +11,12 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { auth, googleprovider, firestore } from "../firebase";
+import Filter from "bad-words";
+import { badwordslist, badwordslist2 } from "../features/badwords.ts";
+import { adminlist } from "./admins.ts";
+
+const filter: any = new Filter({ placeHolder: "#" });
+filter.addWords(...badwordslist, ...badwordslist2);
 
 const userListRef = collection(firestore, "Users");
 
@@ -23,7 +29,9 @@ export const signInWithGoogle = async () => {
       (doc) => doc.data().displayName
     );
 
-    const currentUserDisplayName = auth.currentUser?.displayName;
+    let currentUserDisplayName = auth.currentUser?.displayName;
+    if (adminlist.includes(auth.currentUser?.email || ""))
+      currentUserDisplayName += " - Admin";
 
     // Check if the current user's display name exists in the existing users array
     if (!existingUsers.includes(currentUserDisplayName)) {
@@ -43,6 +51,13 @@ export const createUserCustom = async (
   displayName: string,
   imageURL: string
 ) => {
+  const checkProfanity: boolean = filter.isProfane(displayName);
+
+  if (checkProfanity) {
+    alert("Username not allowed, please enter an appropriate name!");
+    return;
+  }
+
   try {
     let email: string = displayName;
     email = email.replace(/\s/g, "") + "@realtimechat.com";

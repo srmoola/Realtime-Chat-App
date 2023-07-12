@@ -4,13 +4,7 @@ import TextInput from "./TextInput";
 import LeftBubble from "./LeftBubble";
 import RightBubble from "./RightBubble";
 import { auth, firestore } from "../firebase";
-import {
-  collection,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { chatBgColor, chatTextColors } from "../features/jotai";
@@ -35,7 +29,7 @@ const ChatScreen = () => {
   }, [messageList]);
 
   useEffect(() => {
-    const q = query(messageDatabase, orderBy("timestamp"), limit(50));
+    const q = query(messageDatabase, orderBy("timestamp"));
     const getMessages = onSnapshot(q, (user: { docs: any[] }) => {
       let updatedUsers: any[] = [];
       user.docs.forEach((doc: { data: () => any; id: any }) => {

@@ -9,6 +9,11 @@ import { Avatar, Tooltip } from "@mui/material";
 import { auth } from "../firebase.ts";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { firestore } from "../firebase";
+import Filter from "bad-words";
+import { badwordslist, badwordslist2 } from "../features/badwords.ts";
+
+const filter: any = new Filter({ placeHolder: "#" });
+filter.addWords(...badwordslist, ...badwordslist2);
 
 const messageDatabase = collection(firestore, "Messages");
 
@@ -37,8 +42,16 @@ export default function TextInput() {
   const [text, settext] = useState<string>("");
 
   const handleSubmit = async (message: string) => {
+    const checkProfanity: boolean = filter.isProfane(message);
+    let cleanedmessage: string = message;
+
+    if (checkProfanity) {
+      cleanedmessage =
+        " 🤬 This message contains bad stuff, please note you will be banned if this happens again! 🤬";
+    }
+
     await addDoc(messageDatabase, {
-      text: message,
+      text: cleanedmessage,
       sender: auth.currentUser?.displayName,
       senderimageurl: auth.currentUser?.photoURL,
       senderemail: auth.currentUser?.email,
