@@ -6,17 +6,27 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ChatIcon from "@mui/icons-material/Chat";
-import { Avatar, ListItemAvatar, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar,
+  IconButton,
+  ListItemAvatar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { Brightness6 } from "@mui/icons-material";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import HelpIcon from "@mui/icons-material/Help";
 import { firestore } from "../firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { sideBarTextColor, sidebarcolor } from "../features/jotai";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import {
+  chatBgColor,
+  chatTextColors,
+  sideBarTextColor,
+  sidebarcolor,
+} from "../features/jotai";
 import SidebarSkeleton from "./SidebarSkeleton";
 
 const drawerWidth = "20%";
@@ -30,11 +40,34 @@ const iconstyles = { cursor: "pointer", height: 35, width: 35, margin: 1 };
 
 const userListRef = collection(firestore, "Users");
 
+const transitionStyles = {
+  transitionProperty: "background-color, color",
+  transitionDuration: "0.3s",
+  transitionTimingFunction: "linear",
+};
+
 export default function Sidebar({ window, logout }: Props) {
   const [users, setUsers] = useState<any[]>([]);
-  const sidebarBackgroundColor: any = useAtom<string>(sidebarcolor);
-  const textColors: any = useAtom<string>(sideBarTextColor);
+  const [sidebarBackgroundColor, setsidebarbgcolor] = useAtom(sidebarcolor);
+  const [textColors, setTextColors] = useAtom(sideBarTextColor);
   const [isLoaded, setisLoaded] = useState(false);
+
+  const [, setChatBgColor] = useAtom(chatBgColor);
+  const [, setChatTextColors] = useAtom(chatTextColors);
+
+  const setLight = () => {
+    setsidebarbgcolor("#fff");
+    setTextColors("#000");
+    setChatBgColor("#fff");
+    setChatTextColors("#000");
+  };
+
+  const setDark = () => {
+    setsidebarbgcolor("#333232");
+    setTextColors("#fff");
+    setChatBgColor("#1f1e1e");
+    setChatTextColors("#fff");
+  };
 
   useEffect(() => {
     const q = query(userListRef, orderBy("timestamp", "desc"));
@@ -54,7 +87,9 @@ export default function Sidebar({ window, logout }: Props) {
   }, []); // Run the effect only once on component mount
 
   const drawer = (
-    <div style={{ backgroundColor: sidebarBackgroundColor }}>
+    <Box
+      style={{ backgroundColor: sidebarBackgroundColor, ...transitionStyles }}
+    >
       <Box
         sx={{
           width: "100%",
@@ -63,13 +98,22 @@ export default function Sidebar({ window, logout }: Props) {
           placeItems: "center",
         }}
       >
-        <Typography variant="h1" sx={{ fontSize: "20px", color: textColors }}>
+        <Typography
+          variant="h1"
+          sx={{ fontSize: "20px", color: textColors, ...transitionStyles }}
+        >
           Real Time Chat App
           <ChatIcon sx={{ marginLeft: "5px" }} />
         </Typography>
       </Box>
 
-      <Divider sx={{ backgroundColor: textColors, marginBottom: "5px" }} />
+      <Divider
+        sx={{
+          backgroundColor: textColors,
+          marginBottom: "5px",
+          ...transitionStyles,
+        }}
+      />
       <Box
         sx={{
           width: "100%",
@@ -78,34 +122,70 @@ export default function Sidebar({ window, logout }: Props) {
           justifyContent: "center",
           alignItems: "center",
           color: textColors,
+          ...transitionStyles,
         }}
       >
-        <Tooltip title="Settings">
-          <SettingsIcon sx={iconstyles} />
+        <Tooltip title="Light Mode">
+          <IconButton onClick={setLight}>
+            <LightModeIcon
+              style={{ color: textColors, ...transitionStyles }}
+              sx={iconstyles}
+            />
+          </IconButton>
         </Tooltip>
         <Divider
-          sx={{ height: 28, m: 0.5, backgroundColor: textColors }}
+          sx={{
+            height: 28,
+            m: 0.5,
+            backgroundColor: textColors,
+            ...transitionStyles,
+          }}
           orientation="vertical"
         />
-        <Tooltip title="Switch Theme">
-          <Brightness6 onClick={() => logout()} sx={iconstyles} />
+        <Tooltip title="Dark Mode">
+          <IconButton onClick={setDark}>
+            <DarkModeIcon
+              style={{ color: textColors, ...transitionStyles }}
+              sx={iconstyles}
+            />
+          </IconButton>
         </Tooltip>
         <Divider
-          sx={{ height: 28, m: 0.5, backgroundColor: textColors }}
+          sx={{
+            height: 28,
+            m: 0.5,
+            backgroundColor: textColors,
+            ...transitionStyles,
+          }}
           orientation="vertical"
         />
         <Tooltip title="Help">
-          <HelpIcon onClick={() => logout()} sx={iconstyles} />
+          <HelpIcon sx={iconstyles} />
         </Tooltip>
         <Divider
-          sx={{ height: 28, m: 0.5, backgroundColor: textColors }}
+          sx={{
+            height: 28,
+            m: 0.5,
+            backgroundColor: textColors,
+            ...transitionStyles,
+          }}
           orientation="vertical"
         />
         <Tooltip title="Log Out">
-          <LogoutIcon onClick={() => logout()} sx={iconstyles} />
+          <LogoutIcon
+            style={transitionStyles}
+            onClick={() => logout()}
+            sx={iconstyles}
+          />
         </Tooltip>
       </Box>
-      <Divider sx={{ backgroundColor: textColors, marginTop: "5px" }} />
+      <Divider
+        sx={{
+          backgroundColor: textColors,
+          marginTop: "5px",
+          ...transitionStyles,
+        }}
+      />
       <List
         dense
         sx={{
@@ -113,6 +193,7 @@ export default function Sidebar({ window, logout }: Props) {
           maxWidth: 360,
           backgroundColor: sidebarBackgroundColor,
           marginTop: "0px",
+          ...transitionStyles,
         }}
       >
         {!isLoaded ? (
@@ -153,7 +234,7 @@ export default function Sidebar({ window, logout }: Props) {
           backgroundColor: sidebarBackgroundColor,
         }}
       ></Box>
-    </div>
+    </Box>
   );
 
   const container =

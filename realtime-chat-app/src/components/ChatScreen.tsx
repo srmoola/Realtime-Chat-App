@@ -58,6 +58,9 @@ const ChatScreen = () => {
           justifyContent: "right",
           backgroundColor: chatBackgroundColor,
           marginLeft: { xl: "390px" },
+          transitionProperty: "background-color, color",
+          transitionDuration: "0.3s",
+          transitionTimingFunction: "linear",
         }}
         maxWidth="xl"
       >
@@ -69,6 +72,9 @@ const ChatScreen = () => {
             color: textColors,
             marginRight: { xl: "10%" },
             marginLeft: { xl: "10%" },
+            transitionProperty: "background-color, color",
+            transitionDuration: "0.3s",
+            transitionTimingFunction: "linear",
           }}
         >
           <TextInput />
@@ -76,11 +82,14 @@ const ChatScreen = () => {
             sx={{
               position: "relative",
               backgroundColor: chatBackgroundColor,
-              height: { md: "700px", xl: "825px" },
+              height: { md: "650px", xl: "825px" },
               width: "100%",
               color: "white",
               bottom: "7.5%",
               overflowY: "scroll",
+              transitionProperty: "background-color, color",
+              transitionDuration: "0.3s",
+              transitionTimingFunction: "linear",
             }}
           >
             <Box
