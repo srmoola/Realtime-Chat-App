@@ -31,7 +31,7 @@ import RedirectMenu from "./RedirectMenu";
 import { adminlist } from "../features/admins";
 import Dividers from "./Dividers";
 import BottomBoxSide from "./BottomBoxSide";
-import DeleteUserButton from "./deleteUserButton";
+import DeleteUserButton from "./DeleteUserButton";
 
 const drawerWidth = "20%";
 
