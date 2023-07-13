@@ -1,4 +1,4 @@
-import { Avatar, Container, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextInput from "./TextInput";
 import LeftBubble from "./LeftBubble";
@@ -8,6 +8,7 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { chatBgColor, chatTextColors } from "../features/jotai";
+import PhoneScreen from "./PhoneScreen";
 
 const messageDatabase = collection(firestore, "Messages");
 
@@ -127,25 +128,7 @@ const ChatScreen = () => {
           </Box>
         </Box>
       </Container>
-      <Box
-        sx={{
-          height: "fit-content",
-          display: { xl: "none", lg: "none", md: "none", xs: "block" },
-          color: "#fff",
-          position: "absolute",
-          top: "50%",
-          transform: "translateY(-50%)",
-        }}
-      >
-        <Avatar
-          sx={{ ml: "auto", mr: "auto", mb: 1, height: 96, width: 96 }}
-          alt="CodeNinjasLogo"
-          src="public/codeninjaslogo.jpg"
-        />
-        <Typography sx={{ ml: 10, mr: 10 }}>
-          Please get off your phone! App can only be opened on a computer!
-        </Typography>
-      </Box>
+      <PhoneScreen />
     </>
   );
 };

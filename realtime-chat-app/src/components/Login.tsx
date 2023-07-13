@@ -62,9 +62,8 @@ export default function LoginPage({
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(/codeninjassidebarpic.gif)",
+            backgroundImage: "url(/codeninjassidebarpic.png)",
             backgroundRepeat: "no-repeat",
-
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

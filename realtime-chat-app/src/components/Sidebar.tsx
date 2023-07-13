@@ -5,13 +5,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
-import {
-  Avatar,
-  Button,
-  IconButton,
-  ListItemAvatar,
-  Tooltip,
-} from "@mui/material";
+import { Avatar, IconButton, ListItemAvatar, Tooltip } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -35,11 +29,13 @@ import {
 import SidebarSkeleton from "./SidebarSkeleton";
 import RedirectMenu from "./RedirectMenu";
 import { adminlist } from "../features/admins";
+import Dividers from "./Dividers";
+import BottomBoxSide from "./BottomBoxSide";
+import DeleteUserButton from "./deleteUserButton";
 
 const drawerWidth = "20%";
 
 interface Props {
-  window?: () => Window;
   logout: Function;
 }
 
@@ -53,7 +49,7 @@ const transitionStyles = {
   transitionTimingFunction: "linear",
 };
 
-export default function Sidebar({ window, logout }: Props) {
+export default function Sidebar({ logout }: Props) {
   const [users, setUsers] = useState<any[]>([]);
   const [sidebarBackgroundColor, setsidebarbgcolor] = useAtom(sidebarcolor);
   const [textColors, setTextColors] = useAtom(sideBarTextColor);
@@ -121,15 +117,15 @@ export default function Sidebar({ window, logout }: Props) {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-      ></Box>
-
+      />
       <Divider
         sx={{
           backgroundColor: textColors,
-          marginBottom: "5px",
+          marginTop: "5px",
           ...transitionStyles,
         }}
       />
+
       <Box
         sx={{
           width: "100%",
@@ -154,15 +150,7 @@ export default function Sidebar({ window, logout }: Props) {
           open={open}
           anchorEl={anchorEl}
         />
-        <Divider
-          sx={{
-            height: 28,
-            m: 0.5,
-            backgroundColor: textColors,
-            ...transitionStyles,
-          }}
-          orientation="vertical"
-        />
+        <Dividers transitionStyles={transitionStyles} textColors={textColors} />
         <Tooltip title="Light Mode">
           <IconButton onClick={setLight}>
             <LightModeIcon
@@ -171,15 +159,7 @@ export default function Sidebar({ window, logout }: Props) {
             />
           </IconButton>
         </Tooltip>
-        <Divider
-          sx={{
-            height: 28,
-            m: 0.5,
-            backgroundColor: textColors,
-            ...transitionStyles,
-          }}
-          orientation="vertical"
-        />
+        <Dividers transitionStyles={transitionStyles} textColors={textColors} />
         <Tooltip title="Dark Mode">
           <IconButton onClick={setDark}>
             <DarkModeIcon
@@ -188,16 +168,7 @@ export default function Sidebar({ window, logout }: Props) {
             />
           </IconButton>
         </Tooltip>
-        <Divider
-          sx={{
-            height: 28,
-            m: 0.5,
-            backgroundColor: textColors,
-            ...transitionStyles,
-          }}
-          orientation="vertical"
-        />
-
+        <Dividers transitionStyles={transitionStyles} textColors={textColors} />
         <Tooltip title="Log Out">
           <LogoutIcon
             style={transitionStyles}
@@ -206,6 +177,7 @@ export default function Sidebar({ window, logout }: Props) {
           />
         </Tooltip>
       </Box>
+
       <Divider
         sx={{
           backgroundColor: textColors,
@@ -228,7 +200,7 @@ export default function Sidebar({ window, logout }: Props) {
         ) : (
           users.map((value) => {
             return (
-              <div key={value.id}>
+              <Box key={value.id}>
                 <ListItem disablePadding>
                   {adminlist.includes(auth.currentUser?.email || "") ? (
                     <>
@@ -242,13 +214,7 @@ export default function Sidebar({ window, logout }: Props) {
                         sx={{ color: textColors }}
                         primary={value.displayName}
                       />
-                      <Button
-                        onClick={() => banUser(value.id)}
-                        color="error"
-                        sx={{ mr: 2 }}
-                      >
-                        Delete
-                      </Button>
+                      <DeleteUserButton banUser={banUser} userID={value.id} />
                     </>
                   ) : (
                     <>
@@ -272,46 +238,21 @@ export default function Sidebar({ window, logout }: Props) {
                     marginBottom: "5px",
                   }}
                 />
-              </div>
+              </Box>
             );
           })
         )}
       </List>
-      <Box
-        style={{
-          height: "25%",
-          backgroundColor: sidebarBackgroundColor,
-        }}
-      ></Box>
+      <BottomBoxSide sidebarBackgroundColor={sidebarBackgroundColor} />
     </Box>
   );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
       >
-        <Drawer
-          container={container}
-          variant="temporary"
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
         <Drawer
           variant="permanent"
           sx={{
