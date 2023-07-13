@@ -67,7 +67,7 @@ export default function TextInput() {
       sx={{
         display: "flex",
         alignItems: "center",
-        width: { md: "75%", lg: "70%", xl: "65%" },
+        width: { md: "75%", lg: "65%", xl: "60%" },
         position: "fixed",
         bottom: "10px",
         backgroundColor: "#fff",
