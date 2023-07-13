@@ -9,6 +9,8 @@ import { Avatar, IconButton, ListItemAvatar, Tooltip } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { auth, firestore } from "../firebase";
 import {
   collection,
@@ -32,6 +34,7 @@ import { adminlist } from "../features/admins";
 import Dividers from "./Dividers";
 import BottomBoxSide from "./BottomBoxSide";
 import DeleteUserButton from "./DeleteUserButton";
+import { deleteMessages, deleteUsers } from "../features/signin";
 
 const drawerWidth = "20%";
 
@@ -39,7 +42,7 @@ interface Props {
   logout: Function;
 }
 
-const iconstyles = { cursor: "pointer", height: 35, width: 35, margin: 1 };
+const iconstyles = { cursor: "pointer", height: 25, width: 25, margin: 0.2 };
 
 const userListRef = collection(firestore, "Users");
 
@@ -137,6 +140,34 @@ export default function Sidebar({ logout }: Props) {
           ...transitionStyles,
         }}
       >
+        {adminlist.includes(auth.currentUser?.email || "") && (
+          <>
+            <Tooltip title="Delete All Messages">
+              <IconButton onClick={deleteMessages}>
+                <DeleteIcon
+                  style={{ color: textColors, ...transitionStyles }}
+                  sx={iconstyles}
+                />
+              </IconButton>
+            </Tooltip>
+            <Dividers
+              transitionStyles={transitionStyles}
+              textColors={textColors}
+            />
+            <Tooltip title="Delete All Users">
+              <IconButton onClick={deleteUsers}>
+                <PersonRemoveIcon
+                  style={{ color: textColors, ...transitionStyles }}
+                  sx={iconstyles}
+                />
+              </IconButton>
+            </Tooltip>
+            <Dividers
+              transitionStyles={transitionStyles}
+              textColors={textColors}
+            />
+          </>
+        )}
         <Tooltip title="Log In to Dojo">
           <IconButton onClick={handleClick}>
             <HomeIcon

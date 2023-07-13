@@ -7,6 +7,8 @@ import {
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   serverTimestamp,
 } from "firebase/firestore";
@@ -19,6 +21,7 @@ const filter: any = new Filter({ placeHolder: "#" });
 filter.addWords(...badwordslist, ...badwordslist2);
 
 const userListRef = collection(firestore, "Users");
+const messageDatabase = collection(firestore, "Messages");
 
 export const signInWithGoogle = async () => {
   try {
@@ -95,4 +98,18 @@ export const logout = async () => {
   }
 
   window.location.reload();
+};
+
+export const deleteUsers = async () => {
+  const users = await getDocs(userListRef);
+  users.forEach((docs) => {
+    deleteDoc(doc(userListRef, docs.id));
+  });
+};
+
+export const deleteMessages = async () => {
+  const messages = await getDocs(messageDatabase);
+  messages.forEach((docs) => {
+    deleteDoc(doc(messageDatabase, docs.id));
+  });
 };
