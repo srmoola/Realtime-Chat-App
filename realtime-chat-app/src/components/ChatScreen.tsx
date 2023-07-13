@@ -73,7 +73,6 @@ const ChatScreen = () => {
             transitionTimingFunction: "linear",
           }}
         >
-          <TextInput />
           <Box
             sx={{
               position: "relative",
@@ -124,6 +123,7 @@ const ChatScreen = () => {
                     />
                   )
               )}
+              <TextInput />
             </Box>
             <div ref={autoscroll}></div>
           </Box>
