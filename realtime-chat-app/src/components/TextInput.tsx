@@ -68,7 +68,7 @@ export default function TextInput() {
         display: "flex",
         alignItems: "center",
         width: "100%",
-        position: "relative",
+        position: "absolute",
         top: "92%",
         backgroundColor: "#fff",
       }}
@@ -88,8 +88,10 @@ export default function TextInput() {
         placeholder="Type here to chat..."
         value={text}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === "Enter" && text.length > 2) {
             handleSubmit(text);
+          } else if (e.key === "Enter" && text.length < 2) {
+            alert("Plese type 3 letters or more... ");
           }
         }}
       />

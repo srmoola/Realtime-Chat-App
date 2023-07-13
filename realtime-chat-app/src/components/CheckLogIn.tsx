@@ -52,10 +52,8 @@ export default function CheckLogin() {
         <Divider sx={{ width: "95%", ml: "auto", mr: "auto" }} />
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <p style={{ color: "black" }}>
-              Any breaking of the rules Below will result in a{" "}
-              <span style={{ color: "red" }}>BAN!</span>
-            </p>
+            Any breaking of the rules Below will result in a BAN!
+            <br />
             <br />
             1. Be respectful: Treat others in the chat with kindness and
             respect. Avoid using offensive language or engaging in personal
@@ -77,9 +75,7 @@ export default function CheckLogin() {
             moderator immediately.
             <br />
             <br />
-            <p style={{ color: "black" }}>
-              Press I Agree to let us know you understand the rules of the Dojo!
-            </p>
+            Press I Agree to let us know you understand the rules of the Dojo!
           </DialogContentText>
         </DialogContent>
         <DialogActions>
