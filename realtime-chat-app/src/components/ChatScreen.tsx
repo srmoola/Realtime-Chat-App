@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { chatBgColor, chatTextColors } from "../features/jotai";
 import PhoneScreen from "./PhoneScreen";
+import CheckLogin from "./CheckLogIn";
 
 const messageDatabase = collection(firestore, "Messages");
 
@@ -129,6 +130,7 @@ const ChatScreen = () => {
         </Box>
       </Container>
       <PhoneScreen />
+      <CheckLogin />
     </>
   );
 };
