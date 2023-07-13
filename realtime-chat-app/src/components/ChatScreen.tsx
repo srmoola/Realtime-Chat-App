@@ -19,8 +19,8 @@ const ChatScreen = () => {
   const scrollToBottom = () => {
     autoscroll.current.scrollIntoView({
       behavior: "smooth",
-      block: "nearest",
-      inline: "start",
+      block: "end",
+      inline: "nearest",
     });
   };
 

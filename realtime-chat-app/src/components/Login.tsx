@@ -49,6 +49,10 @@ export default function LoginPage({
   const [displayname, setdisplayname] = useState<string>("");
 
   const handleSubmit = (displayName: string, imageURL: string) => {
+    if (displayName.length > 40) {
+      alert("Please shorten your display name!");
+      return;
+    }
     createUserCustom(displayName, imageURL);
   };
 
@@ -91,7 +95,7 @@ export default function LoginPage({
                 required
                 fullWidth
                 id="displayname"
-                label="Display Name"
+                label="Display Name (Required)"
                 name="displayname"
                 autoComplete="off"
                 onChange={(e) => setdisplayname(e.target.value)}
@@ -99,10 +103,9 @@ export default function LoginPage({
               />
               <TextField
                 margin="normal"
-                required
                 fullWidth
                 id="imageurl"
-                label="Avatar Image URL"
+                label="Avatar Image URL (Optional)"
                 name="imageurl"
                 autoComplete="off"
                 autoFocus
